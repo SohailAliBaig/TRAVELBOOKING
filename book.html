@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Ticket</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function validateForm() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var from = document.getElementById('from').value;
+            var to = document.getElementById('to').value;
+            var date = document.getElementById('date').value;
+            var transport = document.getElementById('transport').value;
+            var adults = document.getElementById('adults').value;
+
+            if (name === "") {
+                alert("Please enter your name.");
+                return false;
+            }
+
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            if (from === "") {
+                alert("Please enter your origin.");
+                return false;
+            }
+
+            if (to === "") {
+                alert("Please enter your destination.");
+                return false;
+            }
+
+            if (date === "") {
+                alert("Please select your travel date.");
+                return false;
+            }
+
+            if (transport === "") {
+                alert("Please select a mode of transport.");
+                return false;
+            }
+
+            if (adults < 1) {
+                alert("There must be at least one adult.");
+                return false;
+            }
+
+            document.getElementById('success-message').innerText = "Successfully booked your tickets!";
+            return true;
+        }
+
+        function updateClasses() {
+            var transport = document.getElementById('transport').value;
+            var classesSelect = document.getElementById('classes');
+
+            classesSelect.innerHTML = ''; // Clear the options
+
+            if (transport === 'flight') {
+                addOption(classesSelect, 'Economy');
+                addOption(classesSelect, 'Premium Economy');
+                addOption(classesSelect, 'Business');
+                addOption(classesSelect, 'First Class');
+            } else if (transport === 'train') {
+                addOption(classesSelect, 'Sleeper');
+                addOption(classesSelect, 'AC 3-Tier');
+                addOption(classesSelect, 'AC 2-Tier');
+                addOption(classesSelect, 'First Class AC');
+            } else if (transport === 'bus') {
+                addOption(classesSelect, 'Non AC Sleeper');
+                addOption(classesSelect, 'AC Sleeper');
+                addOption(classesSelect, 'Seater');
+            }
+        }
+
+        function addOption(selectElement, optionText) {
+            var option = document.createElement('option');
+            option.value = optionText.toLowerCase();
+            option.text = optionText;
+            selectElement.appendChild(option);
+        }
+    </script>
+</head>
+<body>
+    <img src="flight.jpg.png" alt="Flight" class="animated-flight">
+
+    <div class="container">
+        <h2>Book Your Ticket</h2>
+        
+        <div class="passenger-details">
+            <label for="name">Passenger Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="travel-details">
+            <label for="from">From:</label>
+            <input type="text" id="from" name="from" placeholder="Enter origin" required>
+
+            <label for="to">To:</label>
+            <input type="text" id="to" name="to" placeholder="Enter destination" required>
+
+            <label for="date">Travel Date:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+
+        <div class="mode-of-transport">
+            <label for="transport">Mode of Transport:</label>
+            <select id="transport" name="transport" onchange="updateClasses()" required>
+                <option value="" disabled selected>Select transport</option>
+                <option value="flight">Flight</option>
+                <option value="train">Train</option>
+                <option value="bus">Bus</option>
+            </select>
+        </div>
+
+        <!-- Classes Section based on Mode of Transport -->
+        <div class="class-section">
+            <label for="classes">Class:</label>
+            <select id="classes" name="classes" required>
+                <option value="" disabled selected>Select class</option>
+            </select>
+        </div>
+
+        <div class="passenger-count">
+            <label for="adults">Number of Adults:</label>
+            <input type="number" id="adults" name="adults" min="1" value="1" required>
+
+            <label for="children">Number of Children:</label>
+            <input type="number" id="children" name="children" min="0" value="0">
+        </div>
+
+        <div class="submit-btn">
+            <button type="button" onclick="validateForm()">Book Now</button>
+        </div>
+
+        <div id="success-message" style="color: green; margin-top: 20px;"></div>
+    </div>
+    
+</body>
+</html>
